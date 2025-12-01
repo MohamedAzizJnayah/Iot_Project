@@ -10,7 +10,7 @@ Le dashboard peut également envoyer une commande descendante (RPC) au capteur a
 
 Cycle complet obtenu :
 
-Capteur virtuel → Cloud (MQTT) → Dashboard → Commande RPC → Capteur mis à jour
+Capteur virtuel → Cloud (MQTT) → Dashboard → Commande RPC → Caclspteur mis à jour
 
 📁 Contenu de la démo
 
