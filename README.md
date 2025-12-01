@@ -1,43 +1,40 @@
-# 🚀 IoT Demo — Capteur Virtuel & ThingsBoard Cloud
+# 🚀 Demo IoT — Capteur Virtuel & ThingsBoard Cloud
 
-> **Simulation d’un flux IoT moderne : Télémétrie → Visualisation Dashboard → Commande RPC → Réaction dynamique**
+> **Simulation d’un flux IoT moderne : Télémétrie ➜ Visualisation Dashboard ➜ Commande RPC ➜ Réaction dynamique**
 
 ---
 
 <div align="center">
 
-<img src="images/dashboard.jpeg" width="400px" alt="dashboard-screenshot" style="border:1px solid #ccc; border-radius:8px;" />
+<img src="images/dashboard.jpeg" width="400px" alt="Capture d'écran du dashboard" style="border:1px solid #ccc; border-radius:8px;" />
 
-<<<<<<< HEAD
-Capteur virtuel → Cloud (MQTT) → Dashboard → Commande RPC → Caclspteur mis à jour
-=======
+<sup>Capteur virtuel ➞ Cloud (MQTT) ➞ Dashboard ➞ Commande RPC ➞ Capteur mis à jour</sup>
 </div>
->>>>>>> 0afdce276fd91df86156ee85d7c665b6420805dd
 
 ---
 
 ## ✨ Vue d’ensemble
 
-Cette démo pédagogique apporte une illustration claire et concrète d’un **mini-système IoT bout-à-bout** basé sur [ThingsBoard Cloud](https://thingsboard.cloud) et un capteur virtuel Python.  
-Elle combine :
+Cette démo pédagogique illustre un **mini-système IoT bout-en-bout** reposant sur [ThingsBoard Cloud](https://thingsboard.cloud) et un capteur virtuel Python.  
+🎯 **Objectifs** :
 
-- **Production & émission automatique de données simulées** : température, humidité, AQI, mode
-- **Visualisation temps réel** sur dashboard entièrement personnalisable
-- **Contrôle à distance** d’un comportement du capteur via un bouton RPC
+- **Production & publication de données simulées** : température, humidité, qualité d’air, mode
+- **Visualisation en temps réel** sur un dashboard personnalisable
+- **Contrôle distant** du capteur grâce à une commande RPC
 
-**Cycle complet :**
+**Cycle complet visuel** :
 
 ```
-(Simulateur Python) ── MQTT ──▶ 🟦 ThingsBoard Cloud 🟦 ──▶ Dashboard 🟦
-       ▲                                                       │
-       └───── <─────────────── Commande RPC (setState) ────────┘
+(Simulateur Python) ──MQTT──▶ 🟦 ThingsBoard Cloud 🟦 ──▶ Dashboard
+     ▲                                      │
+     └─────────────◀─────── Commande RPC (setState) ──────────┘
 ```
 
 ---
 
-## 🗂️ Contenu du repository
+## 🗂️ Structure du projet (partie ThingsBoard)
 
-```
+```tree
 project-root/
 ├── README.md
 ├── virtual_sensor.py
@@ -46,81 +43,84 @@ project-root/
     └── rpc_button.png
 ```
 
-- `virtual_sensor.py` — Script principal du capteur virtuel (Python)
-- `images/` — Illustrations interface utilisateur
+- **virtual_sensor.py** — Script principal du capteur virtuel (Python)
+- **images/** — Illustrations de l’interface utilisateur
 
 ---
 
-## 🏗️ Architecture visuelle
+## 🏗️ Architecture du système (ThingsBoard)
 
 ```
 ┏━━━━━━━━━━━━━━━━━━━━┓
 ┃  Capteur Virtuel   ┃
 ┃   (Python, MQTT)   ┃
-┗━━━━━━━━━━┯━━━━━━━━━┛
-           │
-           ▼
+┗━━━━━━━━┯━━━━━━━━━━━┛
+         │
+         ▼
 🟦 ThingsBoard Cloud
-  ┃  Device+Token
-  ┃  Dashboard
-  ┃  RPC (downlink)
-  ▼
+    ┃  Device + Token
+    ┃  Dashboard
+    ┃  RPC (downlink)
+    ▼
 Visualisation & Contrôle
 ```
 
 ---
 
-## ⚡ 1. Prérequis
+## ⚡ 1. Prérequis (ThingsBoard)
 
-- Python **3.8+**
-- Installer la dépendance MQTT :
+- **Python** ⩾ 3.8
+- Installer la dépendance MQTT :
+
   ```bash
   pip install paho-mqtt
   ```
-- Disposer d’un compte [ThingsBoard Cloud](https://thingsboard.cloud)  
-  *(création gratuite)*
+
+- Créer un compte sur [ThingsBoard Cloud](https://thingsboard.cloud) (gratuit).
 
 ---
 
 ## 🛠️ 2. Déploiement ThingsBoard
 
-### ➤ 2.1. Créer l’appareil
+### 2.1. Créer l’appareil virtuel
 
-- **Devices > Add new device**
-    - *Nom* : `virtual-env-sensor`
-    - *Type* : `default`
+- Devices ➔ Add new device
+- **Nom** : `virtual-env-sensor`
+- **Type** : `default`
 
-### ➤ 2.2. Obtenir votre access token
+### 2.2. Obtenir l’access token
 
-- L’appareil créé, allez dans **Tab "Credentials"**
-- Copiez le token et remplacez dans le script :
+- Fiche appareil ➔ Onglet *Credentials*
+- Copier le token et le renseigner dans le script Python :
+
   ```python
   ACCESS_TOKEN = "VOTRE_TOKEN_ICI"
   ```
 
-### ➤ 2.3. Préparer le dashboard
+### 2.3. Créer & personnaliser le dashboard
 
-- Ajoutez les widgets suivants :
-  - 📉 **Graphique séries temporelles** : humidité
-  - 🌡️ **Jauge** : température
-  - 🏷️ **Carte numérique** : air_quality
-  - 📝 **Carte texte** : mode
-  - 🟢 **Bouton RPC** :
-    - `Type` : Send RPC
-    - `Méthode` : `setState`
-    - `Params` : `"eco"` ou `"normal"`
+Ajouter par exemple les widgets suivants :
+- 📉 **Graphique séries temporelles** : humidité
+- 🌡️ **Jauge** : température
+- 🏷️ **Carte numérique** : air_quality
+- 📝 **Carte texte** : mode
+- 🟢 **Bouton RPC** :
+  - Type : *Send RPC*
+  - Méthod : `setState`
+  - Params : `"eco"` ou `"normal"`
 
 ---
 
-## 💻 3. Capteur virtuel : le script
+## 💻 3. Capteur virtuel (script Python)
 
-- **Ce script :**
-  - Génère température, humidité, AQI toutes les 5 sec
-  - Publie via MQTT sur ThingsBoard Cloud
-  - Écoute les commandes RPC `setState` (pour basculer `eco/normal`)
+Ce script :
+
+- Génère temperature, humidity, air_quality toutes les 5s,
+- Publie vers ThingsBoard Cloud (*telemetry*),
+- Écoute des commandes RPC `setState` pour changer de mode (normal / eco).
 
 <details>
-<summary><strong>Cliquez ici pour voir le code complet</strong></summary>
+  <summary><strong>Voir le code complet du capteur virtuel</strong></summary>
 
 ```python
 import paho.mqtt.client as mqtt
@@ -136,129 +136,162 @@ port = 1883
 client = mqtt.Client()
 client.username_pw_set(ACCESS_TOKEN)
 
+# Mode courant du capteur
 mode = "normal"
 
+# --------- Callback RPC (commande descendante) ---------
 def on_message(client, userdata, msg):
     global mode
+
     data = json.loads(msg.payload.decode())
     method = data.get("method")
     params = data.get("params")
+
     print("\n📡 RPC reçu !")
-    print("➡️ Méthode :", method)
-    print("➡️ Paramètre :", params)
+    print("➡️ Méthode  :", method)
+    print("➡️ Paramètre:", params)
+
     if method == "setState":
         mode = params
         print("🔄 Nouveau mode :", mode)
+
+        # Réponse RPC (optionnelle)
         response = {"updatedMode": mode}
         client.publish(msg.topic.replace("request", "response"), json.dumps(response))
         print("📬 RPC réponse envoyée :", response)
 
 client.on_message = on_message
+
+# Connexion au broker ThingsBoard
 client.connect(broker, port, keepalive=60)
+
+# Abonnement aux RPC
 client.subscribe("v1/devices/me/rpc/request/+")
 client.loop_start()
 
-print("🟢 Capteur virtuel démarré...\n")
+print("🟢 Capteur virtuel ThingsBoard démarré...\n")
 
+# --------- Boucle d'envoi de télémétrie ---------
 while True:
-    temperature = round(random.uniform(20, 32), 2)
+    # Génération de données simulées
+    if mode == "eco":
+        temperature = round(random.uniform(20, 26), 2)
+    else:
+        temperature = round(random.uniform(25, 32), 2)
+
     humidity = round(random.uniform(30, 70), 2)
     air_quality = round(random.uniform(0, 200), 2)
+
     payload = {
         "temperature": temperature,
         "humidity": humidity,
         "air_quality": air_quality,
-        "mode": mode
+        "mode": mode,
     }
+
+    # Envoi vers ThingsBoard
     client.publish("v1/devices/me/telemetry", json.dumps(payload))
     print("📤 Données envoyées :", payload)
+
     time.sleep(5)
 ```
 </details>
 
 ---
 
-## ▶️ 4. Lancement
+## 🌍 [Bonus] Edge Demo — EdgeX Foundry & Dashboard Streamlit
 
-Lancer le simulateur dans votre terminal :
-```bash
-python virtual_sensor.py
-```
+En complément du cloud (ThingsBoard), ce projet propose une démo edge computing basée sur :
 
-**Exemples de retour :**
-```
-📤 Données envoyées : {'temperature': 25.3, 'humidity': 65.1, 'air_quality': 88, 'mode': 'normal'}
-```
-**Lors d’un envoi d’une commande RPC :**
-```
-📡 RPC reçu !
-➡️ Méthode : setState
-➡️ Paramètre : eco
-🔄 Nouveau mode : eco
-📬 RPC réponse envoyée : {'updatedMode': 'eco'}
-```
+- **EdgeX Foundry** (stack microservices IoT edge)
+- Un **device virtuel** (JSON via device-rest)
+- Un **dashboard web Python/Streamlit** interrogeant l’API EdgeX en temps réel.
 
----
+### 🗂️ Contenu spécifique EdgeX
 
-## 📊 5. Dashboard : visualisation & contrôle
-
-- **Mise à jour instantanée :**
-  - 💧 Humidité → graphe temporel
-  - 🌡️ Température → jauge analogique
-  - 🏷️ AQI → carte valeur
-  - 📝 Mode → carte texte
-- **Contrôle en temps réel :**
-  - 🟢 Bouton RPC — pour basculer entre *eco* et *normal*
-
----
-
-## 🖼️ 6. Illustrations
-
-| Dashboard | Bouton RPC |
-|:---:|:---:|
-| <img src="images/dashboard.jpeg" width="380px"/> | <img src="images/rpc_button.png" height="150px"/> |
-
----
-
-## ✅ 7. Checklist de validation
-
-- [x] Connexion MQTT opérationnelle
-- [x] Télémétrie envoyée toutes les 5s
-- [x] Dashboard dynamique en live
-- [x] RPC bidirectionnel  ⚡️
-- [x] Changement de mode dynamique (eco/normal)
-
----
-
-## 📦 8. Structure du repo
-
-```
+```tree
 project-root/
-├── README.md
-├── virtual_sensor.py
-└── images/
-    ├── dashboard.jpeg
-    └── rpc_button.png
+├── edgex_virtual_sensor.py      # Capteur virtuel : mesures → EdgeX
+├── dashboard_edgex.py           # Dashboard Streamlit temps réel
+└── README.md
 ```
 
----
-
-## 🏁 9. Conclusion & utilisations
-
-Ce projet propose une **illustration concrète** et didactique du cycle complet d’un projet IoT moderne :
-
-- **Génération autonome de données**
-- **Transmission sécurisée par MQTT**
-- **Dashboard personnalisable en cloud**
-- **Commande descendante et réaction dynamique sur le device**
-
-> **👨‍💻 Forkez, testez, adaptez pour vos POCs, TP, formation et projets IoT réels !**
+- **edgex_virtual_sensor.py** : envoie temperature, humidity, air_quality vers EdgeX via service device-rest.
+- **dashboard_edgex.py** : récupère les events de core-data, dashboard en temps réel.
 
 ---
 
-<div align="right">
+### 🧱 Architecture EdgeX simplifiée
 
-<sub>
-Un projet par [MohamedAzizJnayah](https://github.com/MohamedAzizJnayah) • 2025
-</sub>
-</div>
+```
+┏━━━━━━━━━━━━━━━━━━━━┓    HTTP REST (JSON)    ┏━━━━━━━━━━━━━━━━━━━━━━┓
+┃  Capteur virtuel   ┃ ───────────────────▶   ┃  EdgeX device-rest   ┃
+┃  (Python script)   ┃                        ┗━━━━━━┯━━━━━━━━━━━━━━┛
+┗━━━━━━━━━━━━━━━━━━━━┛                               │
+                                                     ▼
+                                               Core Data (events)
+                                                     │
+                                                     ▼
+                                    Dashboard Streamlit (PC)
+```
+
+### ⚙️ Prérequis EdgeX
+
+- Stack EdgeX en Docker (voir [docs officielles](https://www.edgexfoundry.org))
+  - core-data, core-metadata, device-rest, edgex-ui-go *(optionnel)*
+- Python ⩾ 3.8
+- Dépendances :
+
+  ```bash
+  pip install requests pandas streamlit streamlit-autorefresh
+  ```
+
+- Un device EdgeX configuré :
+  - DeviceService : `device-rest`
+  - DeviceProfile : profil JSON (une ressource json)
+  - Device : `virtual-json-device`
+
+---
+
+### 🛰️ 1. Capteur virtuel EdgeX (`edgex_virtual_sensor.py`)
+
+- Génére périodiquement :
+  ```json
+  {"temperature": ..., "humidity": ..., "air_quality": ...}
+  ```
+- Envoie ce JSON à EdgeX via le service device-rest en HTTP POST.
+  - URL typique : `http://localhost:59886/api/v3/resource/virtual-json-device/json`
+
+---
+
+### 📊 2. Dashboard EdgeX (`dashboard_edgex.py`)
+
+- Interroge périodiquement l’API `core-data` :
+  ```
+  GET http://localhost:59880/api/v3/event/device/name/virtual-json-device?limit=50
+  ```
+- Extrait temperature, humidity, air_quality
+- Affiche : dernière valeur (KPI), time series, et data brute.
+
+**Lancer le dashboard :**
+
+```bash
+streamlit run dashboard_edgex.py
+```
+*(Se rafraîchit automatiquement toutes les 3s)*
+
+---
+
+## ✅ Synthèse
+
+Ce repository illustre deux architectures :
+
+- **Cloud IoT avec ThingsBoard** :  
+  Simulation capteur MQTT ➝ dashboard cloud ➝ RPC descendante.
+
+- **Edge computing avec EdgeX Foundry** :  
+  Collecte locale sur une gateway ➝ API REST ➝ dashboard local Streamlit.
+
+Deux approches concrètes « du script Python au flux IoT complet » : génération de données, ingestion, visualisation temps réel, commande à distance.
+
+---
