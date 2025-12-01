@@ -35,6 +35,7 @@ Bouton RPC “Send” (eco/normal)
 ✔ Instructions pas-à-pas pour reproduire la démo
 
 🏗️ Architecture globale
+
           ┌──────────────────────────┐
           │   Script Python (MQTT)   │
           │  ✔ Télémétrie            │
